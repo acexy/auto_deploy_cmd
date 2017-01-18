@@ -8,13 +8,12 @@ var fs = require('fs');
 
 module.exports.install = function (folderNames) {
     if (typeof folderNames == 'undefined') {
-        console.log('未指定编译的文件夹名,默认编译当前目录===> '.yellow + '%s'.green, __dirname);
-        cmd.exe('mvn install', function () {
-            console.log('编译文件完成');
+        console.log('Do not specify a directory , Deal with the current directory by default: '.yellow + '%s'.green, __dirname);
+        cmd.exe('mvn install', function (flag) {
         })
     } else {
         let folderArray = folderNames.split(';').map(String);
-        console.log('check folder exists:'.cyan);
+        console.log('Check whether there are the following folders ↓'.cyan);
         console.log();
         let flag;
         let info;
@@ -29,9 +28,9 @@ module.exports.install = function (folderNames) {
         }
         console.log();
         if (!checkFlag) {
-            console.log('some folders is not exists, please check it again'.yellow);
+            console.log('Some folders are not exists, please check them again ↑'.yellow);
         } else {
-            console.log('all folders are exists'.green);
+            console.log('All folders are exists'.green);
         }
     }
 };

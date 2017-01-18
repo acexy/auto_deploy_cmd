@@ -12,16 +12,16 @@ program
 
 program
     .command('install')
-    // .alias('')
+    .alias('build')
     .arguments('[folderNames]')
-    .description('调用mvn编译指定目录的java工程'.green)
+    .description('This command will use `mvn` to build java project'.green)
     .action(function (folderNames) {
         require('./cmd/install').install(folderNames);
     }).on('--help', function () {
         console.log('  Examples:'.yellow);
         console.log();
-        console.log('   $: install > 编译当前目录工程'.blue);
-        console.log('   $: install folderNameA;folderNameB > 编译当前目录指定的folderNameA和folderNameB的工程'.blue);
+        console.log('   $: install > Build current dir project'.blue);
+        console.log('   $: install folderNameA;folderNameB > Build projects of folderNameA and folderNameB'.blue);
     });
 
 program.parse(process.argv);

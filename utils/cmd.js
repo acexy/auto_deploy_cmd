@@ -8,14 +8,17 @@ module.exports.exe = function (cmd, cb) {
     try {
         process.exec(cmd, {encoding: 'utf-8'}, function (error, stdout, stderr) {
             if (error != null) {
-                console.log(JSON.stringify(error));
-                console.info((cmd + ' 无效的命令').yellow);
+                if (error.code == 1) {
+                    console.info('Invalid command: '.red + ('`' + cmd + '`').yellow);
+                    cb(false);
+                    return;
+                }
             }
             console.log(stdout);
-            cb();
+            cb(true);
         });
     } catch (e) {
-        console.log(('执行 ' + cmd + ' 异常').red);
-        cb();
+        console.log('Execute the command error '.red + ('`' + cmd + '`').red);
+        cb(false);
     }
 };
