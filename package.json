@@ -1,5 +1,5 @@
 {
-  "name": "deploy_cmd",
+  "name": "deploy",
   "version": "1.0.0",
   "description": "便捷部署java项目命令行工具",
   "main": "index.js",
