@@ -1,8 +1,12 @@
 {
   "name": "deploy_cmd",
   "version": "1.0.0",
-  "description": "便捷部署java项目",
+  "description": "便捷部署java项目命令行工具",
   "main": "index.js",
+  "dependencies": {
+    "commander":"2.9.0",
+    "colour": "latest"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,7 +19,7 @@
     "deploy",
     "java"
   ],
-  "author": "acexy",
+  "author": "thankjava@foxmail.com",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/thankjava/deploy_cmd/issues"
