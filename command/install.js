@@ -15,7 +15,7 @@ module.exports.install = function (folderNames) {
             } else {
                 console.log('Compile the project successful'.green);
             }
-        })
+        });
     } else {
         console.log('Specifies the target directory location'.yellow);
         console.log('Check whether there are the following folders ↓'.cyan);
@@ -25,7 +25,7 @@ module.exports.install = function (folderNames) {
         var checkFlag = true;
         for (var index in folderArray) {
             flag = fs.existsSync(path.join(process.cwd(), folderArray[index]));
-            console.log(('  folder: ' + folderArray[index] + ' ' + (flag ? '√' : '×'))[flag ? 'green' : 'red']);
+            console.log(('  folder: ' + folderArray[index]  + (flag ? ' √' : ' ×'))[flag ? 'green' : 'red']);
             if (!flag) {
                 checkFlag = false;
             }
@@ -52,7 +52,7 @@ function mvnInstall(index, folderArray) {
         if (index != folderArray.length) {
             mvnInstall(index, folderArray);
         } else {
-            console.log('All projects build success'.green)
+            console.log('All projects build success'.green);
         }
-    })
+    });
 }

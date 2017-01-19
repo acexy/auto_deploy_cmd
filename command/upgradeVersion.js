@@ -49,9 +49,9 @@ function changeContent(rootDirPath, path, content, version) {
     var newContent = content.replace(/<version>?\d.(\d+.)*\d-SNAPSHOT<\//g, '<version>' + version + '-SNAPSHOT<');
     fs.writeFile(path, newContent, 'utf-8', function (err) {
         if (err) {
-            console.log('   ' + String(path.split(rootDirPath)[1]).substring(1) + ' upgrade failed'.red);
+            console.log('   ' + String(path.split(rootDirPath)[1]).substring(1) + ' ×'.red);
         } else {
-            console.log('   ' + String(path.split(rootDirPath)[1]).substring(1) + ' upgrade success'.green);
+            console.log('   ' + String(path.split(rootDirPath)[1]).substring(1) + ' √'.green);
         }
     });
 
