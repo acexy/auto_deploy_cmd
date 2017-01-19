@@ -12,16 +12,29 @@ program
     .command('install')
     .alias('build')
     .arguments('[folderNames]')
-    .description('This command will use `mvn` to build java project' +
-        '(if you want to use more folder, you can use `;` to join them use ' +
-        '`install --help` to get more info)'.green)
+    .description('\n        This command will use ' + '`mvn`'.yellow + ' to build java project\n' +
+        '   If you want to use more folder, you can use `;` to join them\n' +
+        '   use ' + '`deploy install --help`'.green + ' to get more information\n')
     .action(function (folderNames) {
-        require('../cmd/install').install(folderNames);
+        require('./install').install(folderNames);
     }).on('--help', function () {
-        console.log('  Examples:'.yellow);
+        console.log('   Examples:'.blue);
         console.log();
-        console.log('   $: install > Build current dir project'.blue);
-        console.log('   $: install folderNameA;folderNameB > Build projects of folderNameA and folderNameB'.blue);
+        console.log('       $: install > Build current dir project'.blue);
+        console.log('       $: install folderNameA;folderNameB > Build projects of folderNameA and folderNameB'.blue);
+    });
+
+program
+    .command('upgradeVersion')
+    .alias('upV')
+    .arguments('<version>')
+    .description('\n        This command will bulk changes the current directory all projects\'s `pom.xml` version number')
+    .action(function (version) {
+        require('../command/upgradeVersion').upgradeVersion(version);
+    }).on('--help', function () {
+        console.log('   Examples:'.blue);
+        console.log();
+        console.log('       $: upVer 1.1.1 > To upgrade the `pom.xml` version number to 1.1.1'.blue);
     });
 
 program.parse(process.argv);

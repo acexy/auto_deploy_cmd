@@ -22,8 +22,6 @@ module.exports.install = function (folderNames) {
         console.log();
         var folderArray = folderNames.split(';').map(String);
         var flag;
-        var info;
-        var color;
         var checkFlag = true;
         for (var index in folderArray) {
             flag = fs.existsSync(path.join(process.cwd(), folderArray[index]));
@@ -54,7 +52,7 @@ function mvnInstall(index, folderArray) {
         if (index != folderArray.length) {
             mvnInstall(index, folderArray);
         } else {
-            console.log('all project build success'.green)
+            console.log('All projects build success'.green)
         }
     })
 }
