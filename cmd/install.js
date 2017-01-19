@@ -8,17 +8,23 @@ var fs = require('fs');
 
 module.exports.install = function (folderNames) {
     if (typeof folderNames == 'undefined') {
-        console.log('Do not specify a directory , Deal with the current directory by default: '.yellow + '%s'.green, __dirname);
-        cmd.exe('mvn install', function (flag) {
+        console.log('Deal with the current directory by default: '.yellow + '%s'.green, process.cwd());
+        cmd.exe('mvn clean && mvn install', function (flag) {
+            if (!flag) {
+                console.log('Compile the project failure: command failed to perform or invalid'.red);
+            } else {
+                console.log('Compile the project successful'.green);
+            }
         })
     } else {
-        let folderArray = folderNames.split(';').map(String);
+        console.log('Specifies the target directory location'.yellow);
         console.log('Check whether there are the following folders ↓'.cyan);
         console.log();
-        let flag;
-        let info;
-        let color;
-        let checkFlag = true;
+        var folderArray = folderNames.split(';').map(String);
+        var flag;
+        var info;
+        var color;
+        var checkFlag = true;
         for (var index in folderArray) {
             flag = fs.existsSync(path.join(process.cwd(), folderArray[index]));
             console.log(('  folder: ' + folderArray[index] + ' ' + (flag ? '√' : '×'))[flag ? 'green' : 'red']);
@@ -30,7 +36,25 @@ module.exports.install = function (folderNames) {
         if (!checkFlag) {
             console.log('Some folders are not exists, please check them again ↑'.yellow);
         } else {
-            console.log('All folders are exists'.green);
+            console.log('All folders are exists , began to compile all projects'.green);
+            mvnInstall(0, folderArray);
         }
     }
 };
+
+function mvnInstall(index, folderArray) {
+    var cmdStr = 'cd ' + folderArray[index] + ' && mvn clean && mvn install';
+    cmd.exe(cmdStr, function (flag) {
+        if (flag) {
+            console.log(('Project<' + folderArray[index] + '> : compile the complete').green);
+        } else {
+            console.log(('Project<' + folderArray[index] + '> : Compilation fails').red);
+        }
+        index++;
+        if (index != folderArray.length) {
+            mvnInstall(index, folderArray);
+        } else {
+            console.log('all project build success'.green)
+        }
+    })
+}

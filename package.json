@@ -1,10 +1,10 @@
 {
-  "name": "deploy",
-  "version": "1.0.0",
+  "name": "auto_deploy_cmd",
+  "version": "0.0.5",
   "description": "便捷部署java项目命令行工具",
   "main": "index.js",
   "dependencies": {
-    "commander":"2.9.0",
+    "commander": "2.9.0",
     "colour": "latest"
   },
   "scripts": {
@@ -12,17 +12,21 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/thankjava/deploy_cmd.git"
+    "url": "git+https://github.com/thankjava/auto_deploy_cmd.git"
   },
   "keywords": [
     "auto",
     "deploy",
     "java"
   ],
-  "author": "thankjava@foxmail.com",
+  "bin": {
+    "deploy":"bin/deploy"
+  },
+  "author": "acexy<thankjava@foxmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/thankjava/deploy_cmd/issues"
+    "url": "https://github.com/thankjava/auto_deploy_cmd/issues"
   },
-  "homepage": "https://github.com/thankjava/deploy_cmd#readme"
+  "homepage": "https://github.com/thankjava/auto_deploy_cmd#readme",
+  "devDependencies": {}
 }
