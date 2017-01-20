@@ -1,11 +1,15 @@
 {
   "name": "auto_deploy_cmd",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "便捷部署java项目命令行工具",
   "main": "index.js",
   "dependencies": {
     "commander": "2.9.0",
-    "colour": "latest"
+    "colour": "latest",
+    "co": "latest",
+    "thunkify": "latest",
+    "gulp": "latest",
+    "gulp-sftp": "latest"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -20,7 +24,7 @@
     "java"
   ],
   "bin": {
-    "deploy":"bin/deploy"
+    "deploy": "bin/deploy"
   },
   "author": "acexy<thankjava@foxmail.com>",
   "license": "ISC",

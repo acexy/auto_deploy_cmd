@@ -3,13 +3,14 @@
  */
 
 var path = require('path');
-var cmd = require('../utils/cmd');
+var cmd = require('../utils/commandExec');
 var fs = require('fs');
 
 module.exports.install = function (folderNames) {
     if (typeof folderNames == 'undefined') {
         console.log('Deal with the current directory by default: '.yellow + '%s'.green, process.cwd());
-        cmd.exe('mvn clean && mvn install', function (flag) {
+        cmd.exe('mvn cle' +
+            'an && mvn install', function (flag) {
             if (!flag) {
                 console.log('Compile the project failure: command failed to perform or invalid'.red);
             } else {
@@ -25,7 +26,7 @@ module.exports.install = function (folderNames) {
         var checkFlag = true;
         for (var index in folderArray) {
             flag = fs.existsSync(path.join(process.cwd(), folderArray[index]));
-            console.log(('  folder: ' + folderArray[index]  + (flag ? ' √' : ' ×'))[flag ? 'green' : 'red']);
+            console.log(('  folder: ' + folderArray[index] + (flag ? ' √' : ' ×'))[flag ? 'green' : 'red']);
             if (!flag) {
                 checkFlag = false;
             }
