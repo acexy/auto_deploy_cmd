@@ -3,9 +3,13 @@
  */
 
 var fs = require('fs');
+var remoteCommand = require('../utils/remoteCommandExec');
 var path = require('path');
 var gulp = require('gulp');
 var sftp = require('gulp-sftp');
+var os = require('os');
+
+const baseRemotePath = '/home/dev/autoDeploy/source';
 
 module.exports.publish = function (folderNames, env) {
 
@@ -19,6 +23,7 @@ module.exports.publish = function (folderNames, env) {
     var folderPath;
     var files;
     var jarPaths = [];
+    var jarNames = [];
 
     for (var index in folderArray) {
         folderPath = path.join(process.cwd(), folderArray[index]);
@@ -31,6 +36,7 @@ module.exports.publish = function (folderNames, env) {
                 if (file.endsWith('.jar')) {
                     jars.push(file);
                     jarPaths.push(path.join(folderPath, file));
+                    jarNames.push(file);
                 }
             });
             var len = jars.length;
@@ -56,10 +62,101 @@ module.exports.publish = function (folderNames, env) {
     if (!checkFlag) {
         console.log('Some folders are not exists or `*.jar` illegal, please check them again ↑'.yellow);
     } else {
-        console.log('All folders and `*.jar` are exists , will publish the flowing jars ↓'.green);
+        console.log('All folders and `*.jar` are exists , will publish the following jars ↓'.green);
         console.log();
         jarPaths.forEach(function (path) {
-            console.log(('   ' + path).blue);
+            console.log(('   ' + path).green);
+        });
+        console.log();
+        console.log('Check if all jars are in compliance with specifications'.cyan);
+        if (jarPaths.length > 3) {
+            console.log('Up to 3 resources can be updated: app/*.jar or lib/*.api.jar or lib/*.common.jar'.red);
+            return;
+        } else {
+            var appCount = 0;
+            jarPaths.forEach(function (jarPath) {
+                if (jarPath.indexOf('api') == -1 && jarPath.indexOf('common') == -1) {
+                    appCount++;
+                }
+            });
+            if (appCount > 1) {
+                console.log('Up jars resources have too many app/*.jar'.red);
+                return;
+            } else {
+                console.log('All jars resource verification through')
+            }
+        }
+        console.log();
+        remoteCommand.exe('cd ' + baseRemotePath + '/' + env, function (err, sData, eData) {
+            if (err != null) {
+                console.log('Check the specified target location error'.red);
+                return;
+            }
+            if (eData != null) {
+                console.log(('The specified target location is invalid: ' + env).red);
+                return;
+            }
+            remoteCommand.exe('tree ' + baseRemotePath + '/' + env + ' -d', function (err, sData, eData) {
+                if (err != null) {
+                    console.log('Get server files list error'.red);
+                    return;
+                }
+                console.log('Directory structure for the current server ↓'.yellow);
+                console.log(sData.green);
+
+                var deployTmpPath = path.join(os.tmpdir(), 'deploy');
+
+                var appPath = path.join(deployTmpPath, 'app');
+                var libPath = path.join(deployTmpPath, 'lib');
+
+                if (fs.existsSync(deployTmpPath)) {
+                    rmrf(deployTmpPath);
+                }
+                try {
+                    fs.mkdirSync(deployTmpPath);
+                } catch (e) {
+                }
+                try {
+                    fs.mkdirSync(appPath);
+                } catch (e) {
+                }
+                try {
+                    fs.mkdirSync(libPath);
+                } catch (e) {
+                }
+
+                var index = 0;
+                jarPaths.forEach(function (jarPath) {
+                    if (jarPath.indexOf('api') != -1 || jarPath.indexOf('common') != -1) {
+                        fs.createReadStream(jarPath).pipe(fs.createWriteStream(path.join(libPath, jarNames[index])));
+                    } else {
+                        fs.createReadStream(jarPath).pipe(fs.createWriteStream(path.join(appPath, jarNames[index])));
+                    }
+                    index++;
+                });
+                gulp.src(path.join(deployTmpPath, '*', '*')).pipe(
+                    sftp({
+                        host: '10.24.248.120',
+                        port: 22,
+                        username: 'dev',
+                        password: 'devfroad',
+                        remotePath: baseRemotePath + '/' + env
+                    })
+                );
+            });
         });
     }
 };
+
+function rmrf(rootPath) {
+    var files = fs.readdirSync(rootPath);
+    var chiPath;
+    files.forEach(function (file) {
+        chiPath = path.join(rootPath, file);
+        if (fs.statSync(chiPath).isDirectory()) {
+            rmrf(chiPath);
+        } else {
+            fs.unlinkSync(chiPath);
+        }
+    })
+}

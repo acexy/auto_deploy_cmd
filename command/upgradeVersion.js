@@ -58,7 +58,8 @@ module.exports.upgradeVersion = function (version) {
 
 
 function changeContent(rootDirPath, path, content, version) {
-    var newContent = content.replace(/<version>?\d.(\d+.)*\d-SNAPSHOT<\//g, '<version>' + version + '-SNAPSHOT<');
+    var suffix = "/";
+    var newContent = content.replace(/<version>?\d.(\d+.)*\d-SNAPSHOT<\//g, '<version>' + version + '-SNAPSHOT<' + suffix);
     fs.writeFile(path, newContent, 'utf-8', function (err) {
         if (err) {
             console.log('   ' + String(path.split(rootDirPath)[1]).substring(1) + ' ×'.red);

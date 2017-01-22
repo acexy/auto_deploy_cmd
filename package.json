@@ -1,6 +1,6 @@
 {
   "name": "auto_deploy_cmd",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "便捷部署java项目命令行工具",
   "main": "index.js",
   "dependencies": {
@@ -9,7 +9,8 @@
     "co": "latest",
     "thunkify": "latest",
     "gulp": "latest",
-    "gulp-sftp": "latest"
+    "gulp-sftp": "latest",
+    "ssh2": "latest"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
