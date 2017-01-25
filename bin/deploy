@@ -58,6 +58,7 @@ program.parse(process.argv);
 var cmd = program.args;
 if (cmd.length == 0) {
     process.stdout.write(program.helpInformation());
-} else if (typeof cmd[1] != 'object') {
+} else if (typeof cmd[cmd.length - 1] != 'object') {
+    console.log(cmd);
     process.stdout.write(program.helpInformation());
 }
