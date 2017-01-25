@@ -54,3 +54,10 @@ program
 });
 
 program.parse(process.argv);
+
+var cmd = program.args;
+if (cmd.length == 0) {
+    process.stdout.write(program.helpInformation());
+} else if (typeof cmd[1] != 'object') {
+    process.stdout.write(program.helpInformation());
+}
