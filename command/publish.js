@@ -125,17 +125,33 @@ module.exports.publish = function (folderNames, env) {
                 } catch (e) {
                 }
 
-                var index = 0;
-                jarPaths.forEach(function (jarPath) {
-                    if (jarPath.indexOf('api') != -1 || jarPath.indexOf('common') != -1) {
-                        fs.createReadStream(jarPath).pipe(fs.createWriteStream(path.join(libPath, jarNames[index])));
-                    } else {
-                        fs.createReadStream(jarPath).pipe(fs.createWriteStream(path.join(appPath, jarNames[index])));
-                    }
-                    index++;
-                });
-                gulp.src([path.join(deployTmpPath, '**', '*')]).pipe(
-                    sftp({
+                forEachJarPaths(jarPaths, libPath, appPath, jarNames, 0, deployTmpPath, env);
+            });
+        });
+    }
+};
+
+function forEachJarPaths(jarPaths, libPath, appPath, jarNames, index, deployTmpPath, env) {
+
+    var jarPath = jarPaths[index];
+
+    var sfPath;
+    if (jarPath.indexOf('api') != -1 || jarPath.indexOf('common') != -1) {
+        sfPath = libPath;
+    } else {
+        sfPath = appPath;
+    }
+    var rStream = fs.createReadStream(jarPath);
+
+    rStream.pipe(
+        fs.createWriteStream(path.join(sfPath, jarNames[index]))
+    );
+
+    rStream.on('end', function () {
+        index++;
+        if (index == jarPaths.length) {
+            gulp.src(path.join(deployTmpPath, '**', '*'))
+                .pipe(sftp({
                         host: '10.24.248.120',
                         port: 22,
                         username: 'dev',
@@ -143,10 +159,12 @@ module.exports.publish = function (folderNames, env) {
                         remotePath: baseRemotePath + '/' + env
                     })
                 );
-            });
-        });
-    }
-};
+        } else {
+            forEachJarPaths(jarPaths, libPath, appPath, jarNames, index, deployTmpPath, env);
+        }
+    });
+
+}
 
 function rmrf(rootPath) {
     var files = fs.readdirSync(rootPath);
