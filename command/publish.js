@@ -134,7 +134,7 @@ module.exports.publish = function (folderNames, env) {
                     }
                     index++;
                 });
-                gulp.src(path.join(deployTmpPath, '*', '*')).pipe(
+                gulp.src([path.join(deployTmpPath, '**', '*')]).pipe(
                     sftp({
                         host: '10.24.248.120',
                         port: 22,
