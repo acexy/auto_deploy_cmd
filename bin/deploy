@@ -20,8 +20,8 @@ program
     }).on('--help', function () {
     console.log('   Examples:'.blue);
     console.log();
-    console.log('       $: deploy install > Build current dir project'.blue);
-    console.log('       $: deploy install folderNameA;folderNameB > Build projects of folderNameA and folderNameB'.blue);
+    console.log('       $: deploy install > Build current dir project');
+    console.log('       $: deploy install folderNameA;folderNameB > Build projects of folderNameA and folderNameB');
 });
 
 program
@@ -34,7 +34,7 @@ program
     }).on('--help', function () {
     console.log('   Examples:'.blue);
     console.log();
-    console.log('       $: upVer 1.1.1 > To upgrade the `pom.xml` version number to 1.1.1'.blue);
+    console.log('       $: upVer 1.1.1 > To upgrade the `pom.xml` version number to 1.1.1');
 });
 
 program
@@ -49,8 +49,8 @@ program
     }).on('--help', function () {
     console.log('   Examples:'.blue);
     console.log();
-    console.log('       $: deploy pub folderName funpay/dev/order > Publish `folderName` project to funpay/dev/order'.blue);
-    console.log('       $: deploy pub folderNameA;folderNameB funpay/dev/order > Publish `folderNameA` and `folderNameB` to project to funpay/dev/order'.blue);
+    console.log('       $: deploy pub folderName funpay/dev/order > Publish `folderName` project to funpay/dev/order');
+    console.log('       $: deploy pub folderNameA;folderNameB funpay/dev/order > Publish `folderNameA` and `folderNameB` to project to funpay/dev/order');
 });
 
 program.parse(process.argv);

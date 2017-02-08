@@ -2,7 +2,7 @@ var readline = require('readline');
 
 const outputStream = process.stdout;
 
-const waitChar = ['-'.green, '\\'.yellow, '|'.blue, '/'.black];
+const waitChar = ['-', '\\', '|', '/'];
 
 var index = 0;
 var content;
