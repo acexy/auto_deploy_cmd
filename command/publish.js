@@ -13,6 +13,11 @@ const baseRemotePath = '/home/dev/autoDeploy/source';
 
 module.exports.publish = function (folderNames, env) {
 
+    if (env.split('/').length != 3) {
+        console.log('The `env` parameter is incorrect'.red);
+        return;
+    }
+
     console.log('Specifies the target directory location'.yellow);
     console.log('Check whether there are the following folders ↓'.cyan);
     console.log();
