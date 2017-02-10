@@ -18,7 +18,7 @@ program
     .action(function (folderNames) {
         require('../command/install').install(folderNames);
     }).on('--help', function () {
-    console.log('   Examples:'.blue);
+    console.log('   Examples:'.green);
     console.log();
     console.log('       $: deploy install > Build current dir project');
     console.log('       $: deploy install folderNameA;folderNameB > Build projects of folderNameA and folderNameB');
@@ -32,9 +32,9 @@ program
     .action(function (version) {
         require('../command/upgradeVersion').upgradeVersion(version);
     }).on('--help', function () {
-    console.log('   Examples:'.blue);
+    console.log('   Examples:'.green);
     console.log();
-    console.log('       $: upVer 1.1.1 > To upgrade the `pom.xml` version number to 1.1.1');
+    console.log('       $: upVer 1.1.1 > To upgrade the `pom.xml` version number to 1.1.1-SNAPSHOT');
 });
 
 program
@@ -47,10 +47,26 @@ program
     .action(function (folderNames, env) {
         require('../command/publish').publish(folderNames, env);
     }).on('--help', function () {
-    console.log('   Examples:'.blue);
+    console.log('   Examples:'.green);
     console.log();
     console.log('       $: deploy pub folderName funpay/dev/order > Publish `folderName` project to funpay/dev/order');
     console.log('       $: deploy pub folderNameA;folderNameB funpay/dev/order > Publish `folderNameA` and `folderNameB` to project to funpay/dev/order');
+});
+
+program
+    .command('upgradeServer')
+    .alias('upS')
+    .arguments('<cVersion> <tVersion> <env>')
+    .description('\n        This command can upgrade the resource version number of the server\n' +
+        '   It upgrades the version number of the `app`` lib` startup script for the specified server resource\n' +
+        '   use ' + '`deploy upS --help`'.green + ' to get more information\n')
+    .action(function (cVersion, tVersion, env) {
+        require('../command/upgradeServerSources').upgrade(cVersion, tVersion, env);
+    }).on('--help', function () {
+    console.log('   Examples:'.green);
+    console.log();
+    console.log('   env `funpay/dev/order` version `1.0.0` to version `1.0.1`');
+    console.log('       $: deploy upS 1.0.0 1.0.1 funpay/dev/order > Update the version number of the server resource of `funpay/dev/order` to `1.0.0-SNAPSHOT`');
 });
 
 program.parse(process.argv);
@@ -59,6 +75,5 @@ var cmd = program.args;
 if (cmd.length == 0) {
     process.stdout.write(program.helpInformation());
 } else if (typeof cmd[cmd.length - 1] != 'object') {
-    console.log(cmd);
     process.stdout.write(program.helpInformation());
 }
