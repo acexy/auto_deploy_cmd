@@ -28,13 +28,14 @@ program
     .command('upgradeVersion')
     .alias('upV')
     .arguments('<version>')
-    .description('\n        This command will bulk changes the current directory all projects\'s `pom.xml` version number\n')
+    .description('\n        This command will bulk changes the current directory all projects\'s `pom.xml` version number\n' +
+        '   use ' + '`deploy upV --help`'.green + ' to get more information\n')
     .action(function (version) {
         require('../command/upgradeVersion').upgradeVersion(version);
     }).on('--help', function () {
     console.log('   Examples:'.green);
     console.log();
-    console.log('       $: upVer 1.1.1 > To upgrade the `pom.xml` version number to 1.1.1-SNAPSHOT');
+    console.log('       $: upV 1.1.1 > To upgrade the `pom.xml` version number to 1.1.1-SNAPSHOT');
 });
 
 program

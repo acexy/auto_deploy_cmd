@@ -1,6 +1,6 @@
 {
   "name": "auto_deploy_cmd",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "便捷部署java项目命令行工具",
   "main": "index.js",
   "dependencies": {
